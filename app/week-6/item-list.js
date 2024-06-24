@@ -2,33 +2,37 @@
 
 import { useState } from 'react';
 import Item from './item';
-import items from './items.json';
 
-const ItemList = () => {
+const ItemList = ({ items }) => {
 
     const [sortBy, setSortBy] = useState('name');
 
-    let sortedItems;
-    if (sortBy === 'name') {
-        sortedItems = [...items].sort((a, b) => a.name.localeCompare(b.name));
-    }
-    else if (sortBy === 'category') {
-        sortedItems = [...items].sort((a, b) => a.category.localeCompare(b.category));
-    }
-    else if (sortBy === 'group') {
-        sortedItems = Object.entries(
-            items.reduce((accumulator, item) => {
-                const category = item.category;
-                if (!accumulator[category]) {
-                    accumulator[category] = [];
-                }
-                accumulator[category].push(item);
-                return accumulator;
-            }, {})
-        ).sort(([categoryA], [categoryB]) => categoryA.localeCompare(categoryB)).map(([category, items]) => ({ 
-        category, items: items.sort((a,b) => a.name.localeCompare(b.name))
-        }));
-    }
+    const getSortedItems = () => {
+        let sortedItems = [...items];
+        if (sortBy === 'name') {
+            sortedItems.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        else if (sortBy === 'category') {
+            sortedItems.sort((a, b) => a.category.localeCompare(b.category));
+        }
+        else if (sortBy === 'group') {
+            sortedItems = Object.entries(
+                sortedItems.reduce((accumulator, item) => {
+                    const category = item.category;
+                    if (!accumulator[category]) {
+                        accumulator[category] = [];
+                    }
+                    accumulator[category].push(item);
+                    return accumulator;
+                }, {})
+            ).sort(([categoryA], [categoryB]) => categoryA.localeCompare(categoryB)).map(([category, items]) => ({ 
+            category, items: items.sort((a,b) => a.name.localeCompare(b.name))
+            }));
+        }
+        return sortedItems;
+    };
+
+    const sortedItems = getSortedItems();
 
     const handleClickName = () => {
         setSortBy('name');
