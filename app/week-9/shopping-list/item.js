@@ -9,5 +9,5 @@ const Item = ({ name, quantity, category, onSelect }) => {
         </ul>
     );
 };
-
-export default Item;
+ 
+export default Item; 
