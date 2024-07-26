@@ -28,6 +28,9 @@ export default function Home() {
         <div>
           <button onClick={() => router.push('/week-8')}>Week 8</button>
         </div>
+        <div>
+          <button onClick={() => router.push('/week-9')}>Week 9</button>
+        </div>
     </main>
   );
 };
